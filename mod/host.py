@@ -300,7 +300,7 @@ class Host(object):
         self.prefs = prefs
         self.msg_callback = msg_callback
 
-        self.addr = ("localhost", 5555)
+        self.addr = (os.environ['MOD_HOST_ADDR'], 5555)
         self.readsock = None
         self.writesock = None
         self.crashed = False
@@ -360,7 +360,11 @@ class Host(object):
         self.processing_pending_flag = False
         self.init_plugins_data()
 
-        if APP and os.getenv("MOD_LIVE_ISO") is not None:
+
+        if os.getenv("USE_STANDARD_JACK_OUTPUTS") is not None:
+            self.jack_hwin_prefix  = "system:playback_"
+            self.jack_hwout_prefix = "system:capture_"
+        elif APP and os.getenv("MOD_LIVE_ISO") is not None:
             self.jack_hwin_prefix  = "system:playback_"
             self.jack_hwout_prefix = "system:capture_"
         else:
